@@ -14,8 +14,8 @@ const prisma = new PrismaClient();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors({
-  origin: true,
-  credentials: true
+  origin: '*',
+  credentials: false
 }));
 app.use(express.json());
 app.use('/api/auth', authRoutes);

@@ -12,8 +12,8 @@ This is a full-stack e-commerce application built with modern web technologies. 
 ### Key Features
 
 **Customer Features:**
-- Browse products with pagination (8 products on home page, 12 per page on products page)
-- Advanced product filtering (search, category, price range, stock status)
+- Browse products with pagination 
+- Advanced product filtering 
 - Debounced search functionality to optimize performance
 - Shopping cart with persistent state
 - User authentication and registration
@@ -22,7 +22,7 @@ This is a full-stack e-commerce application built with modern web technologies. 
 
 **Admin Features:**
 - Admin dashboard with comprehensive analytics
-- Product management (CRUD operations)
+- Product management => CRUD
 - Automatic SKU generation with category prefixes
 - Sales reports with filtering options
 - Customer analytics and top customers report
@@ -30,7 +30,7 @@ This is a full-stack e-commerce application built with modern web technologies. 
 - Role-based access control
 
 **Technical Features:**
-- Dual database architecture (PostgreSQL + MongoDB)
+- Dual database architecture => PostgreSQL + MongoDB
 - JWT-based authentication with persistent sessions
 - Toast notifications
 - Server-side pagination and filtering
@@ -61,7 +61,7 @@ This is a full-stack e-commerce application built with modern web technologies. 
 ### Development Tools
 - **Package Manager:** npm
 - **Database Migration:** Prisma
-- **Code Quality:** ESLint, Prettier (recommended)
+- **Code Quality:** ESLint, Prettier 
 
 ## Setup and Environment Variable Details
 
@@ -103,9 +103,6 @@ MONGODB_URI="mongodb://localhost:27017/ecommerce_products"
 
 # Bcrypt Configuration
 BCRYPT_SALT_ROUNDS=12
-
-# CORS Configuration
-FRONTEND_URL=http://localhost:3000
 ```
 
 ### Frontend Setup
@@ -336,49 +333,6 @@ Currently, this application doesn't have automated testing features implemented.
 - `/admin/products/[id]` - Edit product
 - `/admin/reports` - Sales and analytics reports
 
-## Deployment Instructions
-
-### Backend Deployment on Render
-
-This project is configured for easy deployment on Render from the root directory.
-
-**Render Configuration:**
-- **Build Command**: `npm run build`
-- **Start Command**: `npm start`
-- **Root Directory**: Leave empty (deploy from root)
-- **Environment**: Node.js
-
-**Required Environment Variables on Render:**
-```env
-NODE_ENV=production
-PORT=10000
-DATABASE_URL=your_postgresql_connection_string
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRES_IN=7d
-BCRYPT_SALT_ROUNDS=12
-```
-
-**Deployment Steps:**
-1. Connect your GitHub repository to Render
-2. Create a new Web Service
-3. Set build and start commands as specified above
-4. Add all required environment variables
-5. Deploy
-
-### Frontend Deployment on Vercel
-
-**Vercel Configuration:**
-- **Framework Preset**: Next.js
-- **Root Directory**: `frontend`
-- **Build Command**: `npm run build`
-- **Output Directory**: `.next`
-
-**Required Environment Variables on Vercel:**
-```env
-NEXT_PUBLIC_API_URL=your_render_backend_url
-```
-
 ## Deployment URLs
 
 **Development URLs:**
@@ -386,8 +340,8 @@ NEXT_PUBLIC_API_URL=your_render_backend_url
 - Backend API: http://localhost:4000
 
 **Production URLs:**
-- Frontend: [To be updated after Vercel deployment]
-- Backend API: [To be updated after Render deployment]
+- Frontend: https://harsh-kolte-220670107027.vercel.app
+- Backend API: https://harsh-kolte-220670107027.onrender.com
 
 ## Admin Login Credentials
 
