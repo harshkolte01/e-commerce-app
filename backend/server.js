@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { PrismaClient } = require('./generated/prisma');
 const connectMongoDB = require('./config/MongoDB');
 const authRoutes = require('./routes/authRoute');
@@ -11,6 +12,10 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT;
 
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
