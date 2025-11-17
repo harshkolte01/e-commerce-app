@@ -73,10 +73,37 @@ const deleteProduct = async (id) => {
   return await Product.findOneAndDelete({ sku: id });
 };
 
+const findByIds = async (ids) => {
+  return await Product.find({
+    $or: [
+      { _id: { $in: ids.filter(id => mongoose.Types.ObjectId.isValid(id)) } },
+      { sku: { $in: ids } }
+    ]
+  });
+};
+
+const decrementStock = async (productId, quantity) => {
+  if (mongoose.Types.ObjectId.isValid(productId)) {
+    return await Product.findByIdAndUpdate(
+      productId,
+      { $inc: { stock: -quantity } },
+      { new: true }
+    );
+  }
+  
+  return await Product.findOneAndUpdate(
+    { sku: productId },
+    { $inc: { stock: -quantity } },
+    { new: true }
+  );
+};
+
 module.exports = {
   findProducts,
   findProductById,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  findByIds,
+  decrementStock
 };

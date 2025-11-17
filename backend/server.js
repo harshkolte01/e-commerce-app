@@ -3,6 +3,7 @@ const { PrismaClient } = require('./generated/prisma');
 const connectMongoDB = require('./config/MongoDB');
 const authRoutes = require('./routes/authRoute');
 const productRoutes = require('./routes/productRoute');
+const checkoutRoutes = require('./routes/checkoutRoute');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/checkout', checkoutRoutes);
 
 const startServer = async () => {
   try {
