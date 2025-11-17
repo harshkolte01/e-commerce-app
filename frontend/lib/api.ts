@@ -82,9 +82,21 @@ export const ordersAPI = {
 
 // Checkout API
 export const checkoutAPI = {
-  createOrder: (items: { productId: string; quantity: number }[]) => 
+  createOrder: (items: { productId: string; quantity: number }[]) =>
     apiRequest('/api/checkout', {
       method: 'POST',
       body: JSON.stringify({ items }),
     }),
+};
+
+// Reports API
+export const reportsAPI = {
+  getDailyRevenue: (days: number = 30) =>
+    apiRequest(`/api/reports/sql/daily-revenue?days=${days}`),
+  
+  getTopCustomers: (limit: number = 10) =>
+    apiRequest(`/api/reports/sql/top-customers?limit=${limit}`),
+  
+  getCategorySummary: () =>
+    apiRequest('/api/reports/mongo/category-summary'),
 };

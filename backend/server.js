@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoute');
 const productRoutes = require('./routes/productRoute');
 const checkoutRoutes = require('./routes/checkoutRoute');
 const orderRoutes = require('./routes/orderRoute');
+const reportRoutes = require('./routes/reportRoute');
 require('dotenv').config();
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reports', reportRoutes);
 
 const startServer = async () => {
   try {

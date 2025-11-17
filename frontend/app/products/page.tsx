@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ProductGrid from '@/components/product/ProductGrid';
 import ProductFilter from '@/components/product/ProductFilter';
+import Pagination from '@/components/Pagination';
 import { productsAPI } from '@/lib/api';
 
 interface Product {
@@ -16,36 +17,88 @@ interface Product {
   updatedAt: string;
 }
 
+interface ProductsResponse {
+  items: Product[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 12;
 
-  // Filter states
+  // Filter 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {
-    fetchProducts();
+    fetchCategories();
   }, []);
 
+  // Debouncing for search
   useEffect(() => {
-    filterProducts();
-  }, [products, selectedCategory, searchTerm, sortBy]);
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); 
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [currentPage, selectedCategory, debouncedSearchTerm, sortBy]);
+
+  const fetchCategories = async () => {
+    try {
+      // Fetch all products to get unique categories
+      const data = await productsAPI.getAll({ page: '1', limit: '1000' });
+      const productsArray = Array.isArray(data?.items) ? data.items : [];
+      const uniqueCategories = [...new Set(productsArray.map((p: Product) => p.category))] as string[];
+      setCategories(uniqueCategories);
+    } catch (err) {
+      console.error('Error fetching categories:', err);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const data = await productsAPI.getAll();
+      
+      const params: Record<string, string> = {
+        page: currentPage.toString(),
+        limit: pageSize.toString(),
+      };
+
+      if (selectedCategory) {
+        params.category = selectedCategory;
+      }
+
+      if (debouncedSearchTerm) {
+        params.q = debouncedSearchTerm;
+      }
+
+      if (sortBy) {
+        params.sort = sortBy;
+      }
+
+      const data: ProductsResponse = await productsAPI.getAll(params);
       
       const productsArray = Array.isArray(data?.items) ? data.items : [];
       setProducts(productsArray);
+      setTotalProducts(data.total || 0);
+      setTotalPages(Math.ceil((data.total || 0) / pageSize));
       
-      const uniqueCategories = [...new Set(productsArray.map((p: Product) => p.category))] as string[];
-      setCategories(uniqueCategories);
     } catch (err) {
       console.error('Error fetching products:', err);
       setError('Failed to load products');
@@ -55,44 +108,24 @@ export default function ProductsPage() {
     }
   };
 
-  const filterProducts = () => {
-    if (!Array.isArray(products)) {
-      setFilteredProducts([]);
-      return;
-    }
-    
-    let filtered = [...products];
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    if (selectedCategory) {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1); 
+  };
 
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+  const handleSearchChange = (search: string) => {
+    setSearchTerm(search);
+    setCurrentPage(1);
+  };
 
-    if (sortBy) {
-      filtered.sort((a, b) => {
-        switch (sortBy) {
-          case 'name':
-            return a.name.localeCompare(b.name);
-          case '-name':
-            return b.name.localeCompare(a.name);
-          case 'price':
-            return a.price - b.price;
-          case '-price':
-            return b.price - a.price;
-          case '-updatedAt':
-            return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-          default:
-            return 0;
-        }
-      });
-    }
-
-    setFilteredProducts(filtered);
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort);
+    setCurrentPage(1); 
   };
 
   if (loading) {
@@ -122,20 +155,33 @@ export default function ProductsPage() {
       <ProductFilter
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange}
         searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchChange={handleSearchChange}
         sortBy={sortBy}
-        onSortChange={setSortBy}
+        onSortChange={handleSortChange}
       />
 
-      <div className="mb-4">
+      <div className="mb-4 flex justify-between items-center">
         <p className="text-gray-600">
-          Showing {filteredProducts.length} of {products.length} products
+          Showing {products.length} of {totalProducts} products
+        </p>
+        <p className="text-gray-600">
+          Page {currentPage} of {totalPages}
         </p>
       </div>
 
-      <ProductGrid products={filteredProducts} />
+      <ProductGrid products={products} />
+
+      {totalPages > 1 && (
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 }
