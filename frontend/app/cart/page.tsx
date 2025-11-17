@@ -3,12 +3,14 @@
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/contexts/ToastContext';
 import { checkoutAPI } from '@/lib/api';
 import { useState } from 'react';
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, clearCart, getTotalPrice } = useCart();
   const { isAuthenticated } = useAuth();
+  const { showToast } = useToast();
   const router = useRouter();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -33,12 +35,14 @@ export default function CartPage() {
         quantity: item.quantity
       }));
 
-      const order = await checkoutAPI.createOrder(orderItems);
+      console.log('Sending checkout request with items:', orderItems);
+      const response = await checkoutAPI.createOrder(orderItems);
+      
       clearCart();
-      router.push(`/orders/${order.id}`);
-    } catch (error) {
-      console.error('Checkout failed:', error);
-      alert('Checkout failed. Please try again.');
+      showToast('Order placed successfully!');
+      router.push(`/orders/${response.order.id}`);
+    } catch (error: any) {
+      showToast(error.message || 'Checkout failed. Please try again.', 'error');
     } finally {
       setIsCheckingOut(false);
     }

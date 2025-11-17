@@ -12,11 +12,13 @@ const createOrder = async (req, res) => {
       order
     });
   } catch (error) {
+    console.error('Checkout error:', error);
+    
     if (error.message.includes('not found') || error.message.includes('Insufficient stock')) {
       return res.status(400).json({ error: error.message });
     }
     
-    res.status(500).json({ error: 'Failed to create order' });
+    res.status(500).json({ error: 'Failed to create order', details: error.message });
   }
 };
 
