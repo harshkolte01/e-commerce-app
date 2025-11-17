@@ -13,10 +13,6 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Name, email and password are required' });
     }
 
-    if (name.includes('\b') || name.includes('\u0008')) {
-      return res.status(400).json({ error: 'Name cannot contain backspace characters' });
-    }
-
     if (name.includes(' ')) {
       return res.status(400).json({ error: 'Name cannot contain spaces' });
     }
