@@ -4,6 +4,7 @@ const connectMongoDB = require('./config/MongoDB');
 const authRoutes = require('./routes/authRoute');
 const productRoutes = require('./routes/productRoute');
 const checkoutRoutes = require('./routes/checkoutRoute');
+const orderRoutes = require('./routes/orderRoute');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/checkout', checkoutRoutes);
+app.use('/api/orders', orderRoutes);
 
 const startServer = async () => {
   try {
