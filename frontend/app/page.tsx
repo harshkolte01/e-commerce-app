@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await productsAPI.getAll();
+        const data = await productsAPI.getAll({ page: '1', limit: '8' });
         setProducts(data.items);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -43,6 +43,10 @@ export default function Home() {
 
   const handleProductClick = (productId: string) => {
     router.push(`/products/${productId}`);
+  };
+
+  const handleShowMore = () => {
+    router.push('/products');
   };
 
   return (
@@ -84,6 +88,17 @@ export default function Home() {
               </button>
             </div>
           ))}
+        </div>
+      )}
+      
+      {!loading && products.length > 0 && (
+        <div className="text-center mt-8">
+          <button
+            onClick={handleShowMore}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            Show More Products
+          </button>
         </div>
       )}
     </div>

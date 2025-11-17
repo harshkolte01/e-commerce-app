@@ -21,8 +21,14 @@ export default function Login() {
     setError('');
 
     try {
-      await login({ email, password });
-      router.push('/');
+      const response = await login({ email, password });
+      
+      // Redirect based on user role
+      if (response.user.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     } catch (err: any) {
       setError(err.message || 'Login failed');
     } finally {
