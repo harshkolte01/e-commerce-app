@@ -5,6 +5,8 @@ interface ProductFilterProps {
   searchTerm: string;
   onSearchChange: (search: string) => void;
   onSearchSubmit: () => void;
+  onSearchClear: () => void;
+  activeSearchTerm: string;
   sortBy: string;
   onSortChange: (sort: string) => void;
 }
@@ -16,6 +18,8 @@ export default function ProductFilter({
   searchTerm,
   onSearchChange,
   onSearchSubmit,
+  onSearchClear,
+  activeSearchTerm,
   sortBy,
   onSortChange,
 }: ProductFilterProps) {
@@ -33,14 +37,26 @@ export default function ProductFilter({
             Search Products
           </label>
           <div className="flex">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Search by name..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Search by name..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {activeSearchTerm && (
+                <button
+                  onClick={onSearchClear}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
             <button
               onClick={onSearchSubmit}
               className="px-3 py-2 bg-blue-600 text-white border border-blue-600 rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

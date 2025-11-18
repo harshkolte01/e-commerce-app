@@ -118,6 +118,12 @@ export default function ProductsPage() {
     setCurrentPage(1);
   };
 
+  const handleSearchClear = () => {
+    setSearchTerm('');
+    setActiveSearchTerm('');
+    setCurrentPage(1);
+  };
+
   const handleSortChange = (sort: string) => {
     setSortBy(sort);
     setCurrentPage(1); 
@@ -154,6 +160,8 @@ export default function ProductsPage() {
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
+        onSearchClear={handleSearchClear}
+        activeSearchTerm={activeSearchTerm}
         sortBy={sortBy}
         onSortChange={handleSortChange}
       />
