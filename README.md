@@ -1,7 +1,7 @@
 # E-COMMERCE APPLICATION
 
-This project is made by me and help of AI is taken in frontend as I am slight weak in frontend, and we our exams are also going on in that case it was difficult complete it within deadline.
-This is my clarification.
+## Clarification
+This project is made by me aka Harsh Kolte, and I used AI for help in some parts, especially the frontend. I am still improving my frontend skills, and since our exams are also going on, it was difficult to complete everything within the deadline.
 
 Here is the overall information regarding this E-COMMERCE APPLICATION
 
@@ -366,7 +366,7 @@ For evaluation and testing purposes, use these admin credentials:
 1. **Start Backend Server:**
 ```bash
 cd backend
-npm start
+node server.js
 # Server runs on http://localhost:4000
 ```
 
@@ -377,35 +377,20 @@ npm run dev
 # Frontend runs on http://localhost:3000
 ```
 
-### Production Mode
-
-1. **Build Frontend:**
-```bash
-cd frontend
-npm run build
-npm start
-```
-
-2. **Start Backend:**
-```bash
-cd backend
-NODE_ENV=production npm start
-```
-
 ## Project Structure
 
 ```
 e-commerce-app/
-├── README.md            # Project documentation
-├── .vscode/            # VSCode configuration
+├── README.md            
+├── .vscode/            
 ├── backend/
-│   ├── .gitignore      # Backend git ignore rules
-│   ├── package.json    # Backend dependencies
+│   ├── .gitignore      
+│   ├── package.json    
 │   ├── server.js       # Main server file
 │   ├── prisma.config.ts # Prisma configuration
 │   ├── config/         # Configuration files
 │   │   ├── index.js    # Main config
-│   │   ├── jwt.js      # JWT configuration
+│   │   ├── jwt.js      
 │   │   └── mongoDB.js  # MongoDB connection
 │   ├── controllers/    # Route controllers
 │   │   ├── authController.js
@@ -440,15 +425,15 @@ e-commerce-app/
 │   │   └── migrations/
 │   └── generated/      # Generated Prisma client
 └── frontend/
-    ├── .gitignore      # Frontend git ignore rules
-    ├── package.json    # Frontend dependencies
-    ├── next.config.ts  # Next.js configuration
-    ├── tsconfig.json   # TypeScript configuration
+    ├── .gitignore      
+    ├── package.json    
+    ├── next.config.ts  
+    ├── tsconfig.json   
     ├── components.json # UI components config
-    ├── app/            # Next.js app directory (App Router)
+    ├── app/            # Next.js app directory 
     │   ├── layout.tsx  # Root layout
     │   ├── page.tsx    # Home page
-    │   ├── globals.css # Global styles
+    │   ├── globals.css 
     │   ├── admin/      # Admin pages
     │   │   ├── page.tsx
     │   │   ├── products/
@@ -479,7 +464,7 @@ e-commerce-app/
     │   ├── api.ts
     │   ├── auth.ts
     │   └── utils.ts
-    └── public/         # Static assets
+    └── public/         
         ├── next.svg
         ├── vercel.svg
         └── *.svg
