@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import ProductGrid from '@/components/product/ProductGrid';
 import ProductFilter from '@/components/product/ProductFilter';
 import Pagination from '@/components/Pagination';
@@ -36,28 +36,19 @@ export default function ProductsPage() {
   const [totalPages, setTotalPages] = useState(0);
   const pageSize = 12;
 
-  // Filter 
+  // Filter
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [activeSearchTerm, setActiveSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  // Debouncing for search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500); 
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, selectedCategory, debouncedSearchTerm, sortBy]);
+  }, [currentPage, selectedCategory, activeSearchTerm, sortBy]);
 
   const fetchCategories = async () => {
     try {
@@ -84,8 +75,8 @@ export default function ProductsPage() {
         params.category = selectedCategory;
       }
 
-      if (debouncedSearchTerm) {
-        params.q = debouncedSearchTerm;
+      if (activeSearchTerm) {
+        params.q = activeSearchTerm;
       }
 
       if (sortBy) {
@@ -120,6 +111,10 @@ export default function ProductsPage() {
 
   const handleSearchChange = (search: string) => {
     setSearchTerm(search);
+  };
+
+  const handleSearchSubmit = () => {
+    setActiveSearchTerm(searchTerm);
     setCurrentPage(1);
   };
 
@@ -158,6 +153,7 @@ export default function ProductsPage() {
         onCategoryChange={handleCategoryChange}
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
+        onSearchSubmit={handleSearchSubmit}
         sortBy={sortBy}
         onSortChange={handleSortChange}
       />

@@ -4,6 +4,7 @@ interface ProductFilterProps {
   onCategoryChange: (category: string) => void;
   searchTerm: string;
   onSearchChange: (search: string) => void;
+  onSearchSubmit: () => void;
   sortBy: string;
   onSortChange: (sort: string) => void;
 }
@@ -14,24 +15,41 @@ export default function ProductFilter({
   onCategoryChange,
   searchTerm,
   onSearchChange,
+  onSearchSubmit,
   sortBy,
   onSortChange,
 }: ProductFilterProps) {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      onSearchSubmit();
+    }
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Search */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Search Products
           </label>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by name..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Search by name..."
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              onClick={onSearchSubmit}
+              className="px-3 py-2 bg-blue-600 text-white border border-blue-600 rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Category Filter */}

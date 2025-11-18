@@ -66,12 +66,8 @@ export default function ProfilePage() {
                       Account Type
                     </label>
                     <div className="bg-white border border-gray-300 rounded-md px-3 py-2">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-100 text-purple-800' 
-                          : 'bg-green-100 text-green-800'
-                      }`}>
-                        {user.role === 'admin' ? 'Administrator' : 'Customer'}
+                      <span className="text-gray-900">
+                        {user.role === 'admin' ? 'Admin' : 'Customer'}
                       </span>
                     </div>
                   </div>
